@@ -5,10 +5,8 @@ import axios from 'axios';
 
 const Pins = () => {
   const [datas, setDatas] = useState();
+  const URL = `${process.env.REACT_APP_API_PINTEREST_ROUTE}/stanber42/milac/pins/`;
 
-  const URL =
-    'https://api.pinterest.com/v3/pidgets/boards/vicemag/magazine/pins/';
-  const TRY = 'https://www.pinterest.co.kr/pin/4011087167876434/';
   const getImages = async () => {
     const {
       data: {
@@ -16,7 +14,7 @@ const Pins = () => {
       },
     } = await axios({
       method: 'GET',
-      url: TRY,
+      url: URL,
       dataType: 'jsonp',
     });
 
@@ -28,37 +26,40 @@ const Pins = () => {
   }, []);
 
   return (
-    <Container>
-      <Wrapper>
-        {datas
-          ? [...datas].map((v, i) => {
-              const { id, images } = v;
-              const { url, width, height } = images['237x'];
-              console.log(images['237x']);
+    <Wrapper>
+      {datas
+        ? datas.map((v, i) => {
+            const { id, images } = v;
+            const { url, width, height } = images['237x'];
 
-              return (
-                <Card height={height} key={id}>
-                  <Image src={url} />
-                </Card>
-              );
-            })
-          : ''}
-      </Wrapper>
-    </Container>
+            return (
+              <Card height={height} key={id}>
+                <Image src={url} />
+              </Card>
+            );
+          })
+        : ''}
+    </Wrapper>
   );
 };
 
 export default Pins;
-const Container = styled.div``;
 
 const Image = styled.img`
+  opacity: 0.85;
   display: inline-block;
   width: 100%;
   height: ${({ height }) => height}px;
   break-inside: avoid;
   margin-bottom: 10px;
-  border-radius: 5px;
   min-width: 200px;
+  border-radius: 10px;
+  transition: ${({ theme }) => theme.transitionOption};
+  :hover {
+    transform: scale(1.02);
+    opacity: 1;
+    cursor: pointer;
+  }
 `;
 
 const Card = styled.div``;
@@ -69,36 +70,29 @@ const Wrapper = styled.div`
 
   @media ${DEVICES.MOBILES} {
     column-count: 2;
-    background: teal;
   }
 
   @media ${DEVICES.MOBILEM} {
     column-count: 3;
-    background: tomato;
   }
 
   @media ${DEVICES.MOBILEL} {
     column-count: 3;
-    background: white;
   }
 
   @media ${DEVICES.TABLET} {
     column-count: 4;
-    background: bisque;
   }
 
   @media ${DEVICES.LAPTOP} {
     column-count: 5;
-    background: teal;
   }
 
   @media ${DEVICES.LAPTOPL} {
     column-count: 6;
-    background: teal;
   }
 
   @media ${DEVICES.DESKTOP} {
     column-count: 7;
-    background: tomato;
   }
 `;
