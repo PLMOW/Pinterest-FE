@@ -9,4 +9,4 @@ const themeSlicer = createSlice({
 });
 
 export default themeSlicer.reducer;
-export const { reducer } = themeSlicer.reducers;
+export const { toggle } = themeSlicer.actions;
