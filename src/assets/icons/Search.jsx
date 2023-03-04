@@ -23,7 +23,8 @@ const Search = () => {
 export default Search;
 
 const Svg = styled.svg`
-  color: white;
+  transition: ${({ theme }) => theme.transitionOption};
+  color: ${({ theme }) => theme.background};
   position: absolute;
   left: 15px;
 `;
