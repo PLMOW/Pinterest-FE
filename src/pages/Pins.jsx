@@ -11,7 +11,7 @@ import GSAP from 'libs/constants/gsap';
 
 const Pins = () => {
   const [datas, setDatas] = useState();
-  const URL = `${process.env.REACT_APP_API_PINTEREST_API}`;
+  const URL = `${process.env.REACT_APP_API_PINTEREST_ROUTE}`;
   const [shuffleDown] = useSound(downSFX);
   const [shuffleUp] = useSound(upLightSFX);
 
