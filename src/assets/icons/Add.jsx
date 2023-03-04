@@ -5,14 +5,14 @@ const Add = () => {
     <Svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      stroke-width="2"
+      strokeWidth="2"
       stroke="currentColor"
-      class="w-6 h-6"
+      className="w-6 h-6"
       width="24"
     >
       <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         d="M12 4.5v15m7.5-7.5h-15"
       />
     </Svg>
