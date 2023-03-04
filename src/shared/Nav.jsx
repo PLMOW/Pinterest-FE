@@ -2,13 +2,14 @@ import styled from 'styled-components';
 import Logo from 'assets/icons/Logo';
 import Search from 'assets/icons/Search';
 import ThemeToggle from './ThemeToggle';
+import Add from 'assets/icons/Add';
 
 const Nav = () => {
   return (
     <Wrapper>
       <LeftWrapper>
         <Logo />
-        <Home>홈</Home>
+        <Add></Add>
       </LeftWrapper>
       <SearchWrapper>
         <Search />
@@ -39,14 +40,6 @@ const Wrapper = styled.div`
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
 `;
 
-const Home = styled.div`
-  background: #111;
-  color: white;
-  font-weight: 600;
-  padding: 14px 20px;
-  border-radius: 30px;
-`;
-
 const SearchWrapper = styled.div`
   width: calc(100% - 210px);
   display: flex;
@@ -65,7 +58,7 @@ const RightWrapper = styled.div`
 `;
 
 const SearchInput = styled.input`
-  color: ${({ theme }) => theme.color};
+  color: ${({ theme }) => theme.background};
   background: ${({ theme }) => theme.transparentColor};
   transition: ${({ theme }) => theme.transitionOption};
   border: none;
@@ -74,4 +67,8 @@ const SearchInput = styled.input`
   font-size: 18px;
   border-radius: 50px;
   width: 100%;
+  opacity: 0.6;
+  :focus {
+    opacity: 1;
+  }
 `;
