@@ -24,7 +24,7 @@ export default Search;
 
 const Svg = styled.svg`
   transition: ${({ theme }) => theme.transitionOption};
-  color: ${({ theme }) => theme.background};
+  color: ${({ theme }) => theme.color};
   position: absolute;
   left: 15px;
 `;
