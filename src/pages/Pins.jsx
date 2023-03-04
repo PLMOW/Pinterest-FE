@@ -33,6 +33,7 @@ const Pins = () => {
 
   const shuffle = () => {
     shuffleUp();
+    if (!datas) return;
     setDatas((prev) => [...prev].sort(() => Math.random() - 0.5));
   };
 
@@ -41,6 +42,7 @@ const Pins = () => {
   }, []);
 
   useLayoutEffect(() => {
+    if (!datas) return;
     cardMount();
   }, [datas]);
 
