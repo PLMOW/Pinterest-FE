@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import DEVICES from 'libs/style/mediaQuery';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import axios from 'axios';
 import ShuffleIcon from 'assets/icons/Shuffle';
 import useSound from 'use-sound';
 import downSFX from 'assets/audio/down.mp3';
 import upLightSFX from 'assets/audio/upLight.mp3';
+import cardMount from 'libs/animations/cardMount';
+import GSAP from 'libs/constants/gsap';
 
 const Pins = () => {
   const [datas, setDatas] = useState();
@@ -38,11 +40,15 @@ const Pins = () => {
     getImages();
   }, []);
 
+  useLayoutEffect(() => {
+    cardMount();
+  }, [datas]);
+
   return (
     <Wrapper>
-      <Shuffle onMouseDown={shuffleDown} onClick={shuffle}>
+      <ShuffleWrapper onMouseDown={shuffleDown} onClick={shuffle}>
         <ShuffleIcon />
-      </Shuffle>
+      </ShuffleWrapper>
       {datas
         ? [...datas]
             .sort(() => Math.random - 0.5)
@@ -50,7 +56,11 @@ const Pins = () => {
               const { id, images } = v;
               const { url, height } = images['237x'];
               return (
-                <Card height={height} key={id}>
+                <Card
+                  className={GSAP.CARD.CARD_CLASSNAME}
+                  height={height}
+                  key={id}
+                >
                   <Image src={url} />
                 </Card>
               );
@@ -84,8 +94,11 @@ const Image = styled.img`
 
 const Card = styled.div``;
 
-const Shuffle = styled.div`
-  width: calc(100% - 20px);
+const ShuffleWrapper = styled.div`
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  z-index: 1;
   background: white;
   border-radius: 10px;
   padding: 10px;
