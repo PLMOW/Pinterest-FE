@@ -27,6 +27,8 @@ const Svg = styled.svg`
   top: 20px;
   right: 20px;
   padding: 10px;
+  color: #111;
+  transition: ${({ theme }) => theme.transitionOption};
   :hover {
     cursor: pointer;
     color: ${({ theme }) => theme.pointColor};
