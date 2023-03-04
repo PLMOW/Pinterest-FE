@@ -4,7 +4,34 @@ const GlobalStyle = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.background};
     color: ${({ theme }) => theme.color};
-    transition: ${({ theme }) => theme.transitionOption};
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  
+  /* Scroll webkit CSS */
+  *::-webkit-scrollbar {
+      width: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: 3px;
+      transition: 0.2s ease-in-out;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  *::-webkit-scrollbar-track {
+      background-color: #0c0d1182;
+      border-radius: 3px;
   }
 
   html, body, div, span, applet, object, iframe,

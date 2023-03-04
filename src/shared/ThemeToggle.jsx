@@ -22,7 +22,12 @@ const ThemeToggle = () => {
 
   return (
     <>
-      <input type="checkbox" id="toggleCheck" onClick={themeToggle}></input>
+      <input
+        hidden
+        type="checkbox"
+        id="toggleCheck"
+        onClick={themeToggle}
+      ></input>
       <label htmlFor="toggleCheck">
         <ToggleBox
           toggleProps={isDark}
@@ -39,9 +44,8 @@ const ThemeToggle = () => {
 export default ThemeToggle;
 
 const ToggleBox = styled.div`
-  position: absolute;
-  right: 10px;
-  margin: 10px;
+  position: relative;
+  margin-right: 0px 40px 0px 0px;
   background: ${(props) =>
     props.toggleProps ? 'rgba(111,111,111,0.5)' : 'rgba(111,111,111,0.5)'};
   border-radius: 10px;

@@ -1,14 +1,20 @@
 import styled from 'styled-components';
 import DEVICES from 'libs/style/mediaQuery';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import axios from 'axios';
+import ShuffleIcon from 'assets/icons/Shuffle';
+import useSound from 'use-sound';
+import downSFX from 'assets/audio/down.mp3';
+import upLightSFX from 'assets/audio/upLight.mp3';
+import cardMount from 'libs/animations/cardMount';
+import GSAP from 'libs/constants/gsap';
 
 const Pins = () => {
   const [datas, setDatas] = useState();
+  const URL = `${process.env.REACT_APP_API_PINTEREST_API}`;
+  const [shuffleDown] = useSound(downSFX);
+  const [shuffleUp] = useSound(upLightSFX);
 
-  const URL =
-    'https://api.pinterest.com/v3/pidgets/boards/vicemag/magazine/pins/';
-  const TRY = 'https://www.pinterest.co.kr/pin/4011087167876434/';
   const getImages = async () => {
     const {
       data: {
@@ -16,89 +22,128 @@ const Pins = () => {
       },
     } = await axios({
       method: 'GET',
-      url: TRY,
+      url: URL,
       dataType: 'jsonp',
     });
 
-    setDatas((prev) => pins);
+    const shuffledPins = pins.sort(() => Math.random() - 0.5);
+
+    setDatas((prev) => shuffledPins);
+  };
+
+  const shuffle = () => {
+    shuffleUp();
+    setDatas((prev) => [...prev].sort(() => Math.random() - 0.5));
   };
 
   useEffect(() => {
     getImages();
   }, []);
 
-  return (
-    <Container>
-      <Wrapper>
-        {datas
-          ? [...datas].map((v, i) => {
-              const { id, images } = v;
-              const { url, width, height } = images['237x'];
-              console.log(images['237x']);
+  useLayoutEffect(() => {
+    cardMount();
+  }, [datas]);
 
+  return (
+    <Wrapper>
+      <ShuffleWrapper onMouseDown={shuffleDown} onClick={shuffle}>
+        <ShuffleIcon />
+      </ShuffleWrapper>
+      {datas
+        ? [...datas]
+            .sort(() => Math.random - 0.5)
+            .map((v, i) => {
+              const { id, images } = v;
+              const { url, height } = images['237x'];
               return (
-                <Card height={height} key={id}>
+                <Card
+                  className={GSAP.CARD.CARD_CLASSNAME}
+                  height={height}
+                  key={id}
+                >
                   <Image src={url} />
                 </Card>
               );
             })
-          : ''}
-      </Wrapper>
-    </Container>
+        : ''}
+    </Wrapper>
   );
 };
 
 export default Pins;
-const Container = styled.div``;
 
 const Image = styled.img`
+  opacity: 0.85;
   display: inline-block;
   width: 100%;
   height: ${({ height }) => height}px;
   break-inside: avoid;
   margin-bottom: 10px;
-  border-radius: 5px;
   min-width: 200px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
+  transition: ${({ theme }) => theme.transitionOption};
+
+  :hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.55);
+    transform: scale(1.02);
+    opacity: 1;
+    cursor: pointer;
+  }
 `;
 
 const Card = styled.div``;
 
+const ShuffleWrapper = styled.div`
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  z-index: 1;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: ${({ theme }) => theme.transitionOption};
+
+  background: ${({ theme }) => theme.color};
+  color: ${({ theme }) => theme.background};
+  :hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.55);
+    transform: scale(1.02);
+    opacity: 1;
+    cursor: pointer;
+  }
+`;
+
 const Wrapper = styled.div`
-  background: ${({ theme }) => theme.transparentColor};
+  margin-top: 88px;
   padding: 10px;
 
   @media ${DEVICES.MOBILES} {
     column-count: 2;
-    background: teal;
   }
 
   @media ${DEVICES.MOBILEM} {
     column-count: 3;
-    background: tomato;
   }
 
   @media ${DEVICES.MOBILEL} {
     column-count: 3;
-    background: white;
   }
 
   @media ${DEVICES.TABLET} {
     column-count: 4;
-    background: bisque;
   }
 
   @media ${DEVICES.LAPTOP} {
     column-count: 5;
-    background: teal;
   }
 
   @media ${DEVICES.LAPTOPL} {
     column-count: 6;
-    background: teal;
   }
 
   @media ${DEVICES.DESKTOP} {
     column-count: 7;
-    background: tomato;
   }
 `;
