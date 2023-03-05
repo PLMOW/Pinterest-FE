@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { KEY, EXPIRE } from 'constants/cookie';
+import { METHOD } from 'constants/axios';
 
 class Axios {
   #instance;
@@ -87,6 +88,7 @@ class Axios {
    */
   get(endPoint) {
     this.#instance({
+      method: METHOD.GET,
       url: endPoint,
     });
   }
@@ -95,13 +97,26 @@ class Axios {
    * @param {string} endPoint
    * @param {string} query
    */
-  getByQuery(endPoint, query) {}
+  getByQuery(endPoint, query) {
+    this.#instance({
+      method: METHOD.GET,
+      url: endPoint,
+      params: {
+        ...query,
+      },
+    });
+  }
 
   /**
    * @param {string} endPoint
    * @param {string} query
    */
-  getByParams(endPoint, params) {}
+  getByParams(endPoint, params) {
+    this.#instance({
+      method: METHOD.GET,
+      url: `${endPoint}/${params}`,
+    });
+  }
 }
 
 export default Axios;
