@@ -117,6 +117,42 @@ class Axios {
       url: `${endPoint}/${params}`,
     });
   }
+
+  /**
+   * @param {string} endPoint
+   * @param {object} data
+   */
+  post(endPoint, data) {
+    this.#instance({
+      method: METHOD.POST,
+      url: `${endPoint}`,
+      data,
+    });
+  }
+
+  /**
+   * @param {string} endPoint
+   * @param {number} id
+   * @param {object} data
+   */
+  put(endPoint, id, data) {
+    this.#instance({
+      method: METHOD.PUT,
+      url: `${endPoint}/${id}`,
+      data,
+    });
+  }
+
+  /**
+   * @param {string} endPoint
+   * @param {number} id
+   */
+  delete(endPoint, id) {
+    this.#instance({
+      method: METHOD.DELETE,
+      url: `${endPoint}/${id}`,
+    });
+  }
 }
 
 export default Axios;
