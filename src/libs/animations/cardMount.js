@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import GSAP from 'libs/constants/gsap';
+import GSAP from 'constants/gsap';
 
 const cardMount = () => {
   gsap.fromTo(

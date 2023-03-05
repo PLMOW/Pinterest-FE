@@ -1,4 +1,4 @@
-import GlobalStyle from 'libs/style/Globalstyle';
+import GlobalStyle from 'styles/Globalstyle';
 import { ThemeProvider } from 'styled-components';
 import { darkTheme, lightTheme } from 'theme';
 import { useSelector } from 'react-redux';
