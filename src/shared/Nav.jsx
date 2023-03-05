@@ -1,19 +1,26 @@
 import styled from 'styled-components';
 import Logo from 'assets/icons/Logo';
 import Search from 'assets/icons/Search';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from '../components/ThemeToggle';
 import Add from 'assets/icons/Add';
+import { useForm } from 'react-hook-form';
 
 const Nav = () => {
+  const { register, handleSubmit, watch } = useForm();
+
+  const onValid = (data) => {
+    console.log(1, data);
+  };
+
   return (
     <Wrapper>
       <LeftWrapper>
         <Logo />
         <Add></Add>
       </LeftWrapper>
-      <SearchWrapper>
+      <SearchWrapper onSubmit={handleSubmit(onValid)}>
         <Search />
-        <SearchInput placeholder="search" />
+        <SearchInput {...register('search')} placeholder="search" />
       </SearchWrapper>
       <RightWrapper>
         <ThemeToggle />
@@ -40,7 +47,7 @@ const Wrapper = styled.div`
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
 `;
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled.form`
   width: calc(100% - 210px);
   display: flex;
   align-items: center;

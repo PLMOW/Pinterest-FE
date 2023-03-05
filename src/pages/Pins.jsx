@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import DEVICES from 'libs/style/mediaQuery';
+import DEVICES from 'styles/mediaQuery';
 import { useEffect, useState, useLayoutEffect } from 'react';
 import axios from 'axios';
 import ShuffleIcon from 'assets/icons/Shuffle';
@@ -7,7 +7,7 @@ import useSound from 'use-sound';
 import downSFX from 'assets/audio/down.mp3';
 import upLightSFX from 'assets/audio/upLight.mp3';
 import cardMount from 'libs/animations/cardMount';
-import GSAP from 'libs/constants/gsap';
+import GSAP from 'constants/gsap';
 
 const Pins = () => {
   const [datas, setDatas] = useState();

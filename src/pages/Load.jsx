@@ -86,7 +86,7 @@ const Load = () => {
     const cookie = new Cookies();
     await axios({
       method: 'POST',
-      url: `${process.env.REACT_APP_API_BASE_ROUTE}/api/lo`,
+      url: `${process.env.REACT_APP_API_BASE_ROUTE}/api/pins`,
       data: myFormData,
       headers: {
         'Content-Type': 'multipart/form-data',
