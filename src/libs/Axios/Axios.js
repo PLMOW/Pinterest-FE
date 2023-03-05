@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
-import { COOKIE } from 'constants/cookie';
+import { KEY, EXPIRE } from 'constants/cookie';
 
 class Axios {
   #instance;
@@ -45,7 +45,7 @@ class Axios {
       ...config,
       headers: {
         ...headers,
-        Authorization: `${this.#cookie.get(COOKIE.ACCESS_TOKEN)}`,
+        Authorization: `${this.#cookie.get(KEY.ACCESS_TOKEN)}`,
       },
     };
 
@@ -61,9 +61,9 @@ class Axios {
 
     if (authorization) {
       const validUntil = new Date();
-      validUntil.setHours(new Date().getHours() + 1);
+      validUntil.setTime(new Date().getTime() + EXPIRE.ACCESS_TOKEN);
 
-      this.#cookie.set(COOKIE.ACCESS_TOKEN, authorization, {
+      this.#cookie.set(KEY.ACCESS_TOKEN, authorization, {
         path: '/',
         expires: validUntil,
       });
@@ -71,9 +71,9 @@ class Axios {
 
     if (refreshtoken) {
       const validUntil = new Date();
-      validUntil.setHours(new Date().getHours() + 1);
+      validUntil.setTime(new Date().getTime() + EXPIRE.REFRESH_TOKEN);
 
-      this.#cookie.set(COOKIE.REFRESH_TOKEN, refreshtoken, {
+      this.#cookie.set(KEY.REFRESH_TOKEN, refreshtoken, {
         path: '/',
         expires: validUntil,
       });
