@@ -19,6 +19,7 @@ class Axios {
     this.#setInterceptor();
   }
 
+  /* Incerceptor */
   #setInterceptor() {
     this.#instance.interceptors.request.use(
       this.#reqMiddleWare.bind(this),
@@ -30,6 +31,7 @@ class Axios {
     );
   }
 
+  /* Req */
   #reqMiddleWare(config) {
     let newConfig = config;
     if (this.#auth) newConfig = this.#setAuthReq(newConfig);
@@ -40,6 +42,7 @@ class Axios {
   #setAuthReq(config) {
     const { headers } = config;
     const newConfig = {
+      ...config,
       headers: {
         ...headers,
         Authorization: `${this.#cookie.get(COOKIE.ACCESS_TOKEN)}`,
@@ -51,12 +54,30 @@ class Axios {
 
   #reqOnError(error) {}
 
+  /* Res */
   #resMiddleWare(res) {
     this.#instance.interceptors.response.use();
-    const { authorization } = res.headers;
-    const { refreshtoken } = res.headers;
+    const { authorization, refreshtoken } = res.headers;
 
-    //if (authorization) //쿠키 넣어주기
+    if (authorization) {
+      const validUntil = new Date();
+      validUntil.setHours(new Date().getHours() + 1);
+
+      this.#cookie.set(COOKIE.ACCESS_TOKEN, authorization, {
+        path: '/',
+        expires: validUntil,
+      });
+    }
+
+    if (refreshtoken) {
+      const validUntil = new Date();
+      validUntil.setHours(new Date().getHours() + 1);
+
+      this.#cookie.set(COOKIE.REFRESH_TOKEN, refreshtoken, {
+        path: '/',
+        expires: validUntil,
+      });
+    }
   }
 
   #resOnError(error) {}
