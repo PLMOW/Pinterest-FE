@@ -7,44 +7,22 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useQueryClient } from 'react-query';
 import Upload from 'assets/icons/Upload';
 import Exit from 'assets/icons/Exit';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const Load = () => {
   const route = useLocation();
   const navigate = useNavigate();
   const routeSpy = useRouteSpy(route.pathname, '/');
   const [imgData, setImgData] = useState();
-  const [data, setData] = useState({
-    title: '',
-    description: '',
-    hashtags: [],
-  });
   const [imgSrc, setImgSrc] = useState();
-  const queryClient = useQueryClient();
+  const { register, handleSubmit } = useForm();
 
   useEffect(() => {
     //routeSpy();
   }, []);
-
-  const onChangeTitleHandler = (e) => {
-    setData({
-      ...data,
-      title: e.target.value,
-    });
-  };
-
-  const onChangeDescHandler = (e) => {
-    setData({
-      ...data,
-      description: e.target.value,
-    });
-  };
-
-  const hashHandler = () => {
-    console.log();
-  };
 
   const handleUpload = (e) => {
     /* Add */
@@ -69,8 +47,7 @@ const Load = () => {
     };
   };
 
-  const uploadProduct = async (e) => {
-    e.preventDefault();
+  const onValid = async (data) => {
     if (!imgData) return toast.error('핀 이미지를 추가해주세요!');
     const { title, description, hashtags } = data;
     if (!data.description) return toast.error('핀에 대한 설명을 적어주세요!');
@@ -93,9 +70,7 @@ const Load = () => {
         Authorization: `${cookie.get('ACCESS_TOKEN')}`,
       },
     });
-
-    alert('성공');
-    queryClient.invalidateQueries({ queryKey: 'search' });
+    toast.success('핀 생성 완료!');
     setTimeout(() => {
       navigate('/pins');
     }, 1500);
@@ -105,9 +80,11 @@ const Load = () => {
     <Wrapper>
       <ToastContainer position="bottom-right" theme="light" />
 
-      <Form onSubmit={uploadProduct}>
+      <Form onSubmit={handleSubmit(onValid)}>
         <FormNav>
-          <Exit />
+          <Link to="/">
+            <Exit />
+          </Link>
         </FormNav>
         <FormContent>
           <ImageContainer htmlFor="image">
@@ -130,19 +107,17 @@ const Load = () => {
           <RightWrapper>
             <RightTopContainer>
               <InputTitle
-                value={data.title}
-                onChange={onChangeTitleHandler}
+                {...register('title')}
                 placeholder="제목 추가"
               ></InputTitle>
               <Description
                 placeholder="핀에 대해 설명해보세요!"
                 spellCheck="false"
-                value={data.description}
-                onChange={onChangeDescHandler}
+                {...register('description')}
               ></Description>
               <HashWrapper>
-                <HashInput placeholder="#해시태그" />
-                <HashSubmit onClick={hashHandler}>추가</HashSubmit>
+                <HashInput {...register('hash')} placeholder="#해시태그" />
+                <HashSubmit>추가</HashSubmit>
               </HashWrapper>
             </RightTopContainer>
             <RightBottomContainer>
