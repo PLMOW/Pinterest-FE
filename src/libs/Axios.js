@@ -57,7 +57,6 @@ class Axios {
 
   /* Res */
   #resMiddleWare(res) {
-    this.#instance.interceptors.response.use();
     const { authorization, refreshtoken } = res.headers;
 
     if (authorization) {
