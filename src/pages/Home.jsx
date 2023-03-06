@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setSearchValue } from 'redux/modules/searchSlicer';
 import { overlayToggle } from 'redux/modules/overlayToggle';
 import OverlayBox from 'components/OverlayBox';
+import { motion } from 'framer-motion';
 
 const Home = () => {
   const [overlayBoxData, setOverlayBoxData] = useState();
@@ -41,13 +42,17 @@ const Home = () => {
     dispatch(overlayToggle());
   };
 
-  console.log(1111, overlayBoxData, overlayToggleState);
-
   return (
     <Container>
       {overlayToggleState && (
-        <Overlay onClick={cardCloseHandler}>
-          <OverlayBox />
+        <Overlay
+          variants={overlayVariants}
+          initial="from"
+          animate="to"
+          exit="exit"
+          onClick={cardCloseHandler}
+        >
+          <OverlayBox data={overlayBoxData} />
         </Overlay>
       )}
 
@@ -56,7 +61,7 @@ const Home = () => {
       </ShuffleWrapper>
       <Wrapper>
         {pins
-          ? [...pins].map((v, i) => {
+          ? [...pins].map((v) => {
               const { pinId, imageUrl } = v;
               return (
                 <Card
@@ -79,15 +84,20 @@ const Home = () => {
 
 export default Home;
 
+const overlayVariants = {
+  from: { opacity: 0 },
+  to: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.35 } },
+};
+
 const Container = styled.div`
   position: relative;
   display: flex;
-  background: tomato;
   height: 100vh;
   overflow: auto;
 `;
 
-const Overlay = styled.div`
+const Overlay = styled(motion.div)`
   position: absolute;
   z-index: 2;
   left: 0;
@@ -120,7 +130,7 @@ const Image = styled.img`
   }
 `;
 
-const Card = styled.div``;
+const Card = styled(motion.div)``;
 
 const Wrapper = styled.div`
   position: relative;
