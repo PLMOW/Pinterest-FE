@@ -1,30 +1,43 @@
 import styled from 'styled-components';
 import DEVICES from 'styles/mediaQuery';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const OverlayBox = ({ data }) => {
   const { title, imageUrl, description, hashtags } = data;
 
   return (
-    <Wrapper>
-      <Img src={imageUrl} />
-      <RightWrapper>
-        <RightTopContainer>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-          <HashWrapper>
-            <Hashs>#{hashtags}</Hashs>
-          </HashWrapper>
-        </RightTopContainer>
-        <RightBottomContainer>
-          <Button>저장하기</Button>
-        </RightBottomContainer>
-      </RightWrapper>
-    </Wrapper>
+    <AnimatePresence>
+      <Wrapper
+        variants={overlayVariants}
+        initial="from"
+        animate="to"
+        exit="exit"
+      >
+        <Img src={imageUrl} />
+        <RightWrapper>
+          <RightTopContainer>
+            <Title>{title}</Title>
+            <Description>{description}</Description>
+            <HashWrapper>
+              <Hashs>#{hashtags}</Hashs>
+            </HashWrapper>
+          </RightTopContainer>
+          <RightBottomContainer>
+            <Button>저장하기</Button>
+          </RightBottomContainer>
+        </RightWrapper>
+      </Wrapper>
+    </AnimatePresence>
   );
 };
 
 export default OverlayBox;
+
+const overlayVariants = {
+  from: { opacity: 0 },
+  to: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.35 } },
+};
 
 /* FormLeft */
 const Img = styled.img`
@@ -147,16 +160,6 @@ const Hashs = styled.div`
   background: rgba(0, 0, 0, 0.3);
   color: whitesmoke;
   font-weight: 600;
+  margin-bottom: 15px;
   border-radius: 5px;
-`;
-
-const HashSubmit = styled.div`
-  padding: 10px 20px;
-  color: white;
-  background: ${({ theme }) => theme.color};
-  border: none;
-  border-radius: 5px;
-  :hover {
-    cursor: pointer;
-  }
 `;
