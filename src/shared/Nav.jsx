@@ -8,10 +8,12 @@ import { useDispatch } from 'react-redux';
 import { setSearchValue } from 'redux/modules/searchSlicer';
 import Axios from 'libs/Axios';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
 
 const Nav = () => {
   const { register, handleSubmit, watch } = useForm();
-  const api = new Axios();
+  const api = useMemo(() => new Axios(), []);
   const dispatch = useDispatch();
 
   const onValid = (data) => {
@@ -37,8 +39,12 @@ const Nav = () => {
   return (
     <Wrapper>
       <LeftWrapper>
-        <Logo />
-        <Add></Add>
+        <Link to="/">
+          <Logo />
+        </Link>
+        <Link to="/upload">
+          <Add />
+        </Link>
       </LeftWrapper>
       <SearchWrapper onSubmit={handleSubmit(onValid)}>
         <Search />
@@ -79,6 +85,7 @@ const SearchWrapper = styled.form`
 
 const LeftWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const RightWrapper = styled.div`
