@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import DEVICES from 'styles/mediaQuery';
-import { useEffect, useState, useLayoutEffect } from 'react';
-import axios from 'axios';
+import { useLayoutEffect } from 'react';
 import ShuffleIcon from 'assets/icons/Shuffle';
 import useSound from 'use-sound';
 import downSFX from 'assets/audio/down.mp3';
@@ -16,7 +15,6 @@ const Home = () => {
   const [shuffleDown] = useSound(downSFX);
   const [shuffleUp] = useSound(upLightSFX);
   const pins = useSelector((state) => state.searchSlicer);
-  console.log('home : ', pins);
   const dispatch = useDispatch();
 
   const shuffle = () => {
