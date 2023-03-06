@@ -60,16 +60,18 @@ const Load = () => {
     const blob = new Blob([json], { type: 'application/json' });
     myFormData.append('data', blob);
 
+    console.log(111, myFormData);
     const cookie = new Cookies();
-    await axios({
+    const res = await axios({
       method: 'POST',
-      url: `${process.env.REACT_APP_API_BASE_ROUTE}/api/pin`,
+      url: `${process.env.REACT_APP_API_BASE_ROUTE}api/pins`,
       data: myFormData,
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `${cookie.get('ACCESS_TOKEN')}`,
       },
     });
+
     toast.success('핀 생성 완료!');
     setTimeout(() => {
       navigate('/pins');
@@ -116,7 +118,7 @@ const Load = () => {
                 {...register('description')}
               ></Description>
               <HashWrapper>
-                <HashInput {...register('hash')} placeholder="#해시태그" />
+                <HashInput {...register('hashtags')} placeholder="#해시태그" />
                 <HashSubmit>추가</HashSubmit>
               </HashWrapper>
             </RightTopContainer>
