@@ -7,19 +7,19 @@ import downSFX from 'assets/audio/down.mp3';
 import upLightSFX from 'assets/audio/upLight.mp3';
 import cardMount from 'libs/animations/cardMount';
 import GSAP from 'constants/gsap';
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchValue } from 'redux/modules/searchSlicer';
 import { overlayToggle } from 'redux/modules/overlayToggle';
+import { setBoxData } from 'redux/modules/boxDataSlicer';
 import OverlayBox from 'components/OverlayBox';
 import { motion } from 'framer-motion';
 
 const Home = () => {
-  const [overlayBoxData, setOverlayBoxData] = useState();
   const [shuffleDown] = useSound(downSFX);
   const [shuffleUp] = useSound(upLightSFX);
   const pins = useSelector((state) => state.searchSlicer);
   const overlayToggleState = useSelector((state) => state.overlaySlicer);
+  const boxData = useSelector((state) => state.boxDataSlicer);
   const dispatch = useDispatch();
 
   const shuffle = () => {
@@ -35,7 +35,7 @@ const Home = () => {
 
   const cardOpenHandler = (v) => {
     dispatch(overlayToggle());
-    setOverlayBoxData((prev) => v);
+    dispatch(setBoxData(v));
   };
 
   const cardCloseHandler = (v) => {
@@ -45,15 +45,16 @@ const Home = () => {
   return (
     <Container>
       {overlayToggleState && (
-        <Overlay
-          variants={overlayVariants}
-          initial="from"
-          animate="to"
-          exit="exit"
-          onClick={cardCloseHandler}
-        >
-          <OverlayBox data={overlayBoxData} />
-        </Overlay>
+        <OverlayWrapper>
+          <Overlay
+            variants={overlayVariants}
+            initial="from"
+            animate="to"
+            exit="exit"
+            onClick={cardCloseHandler}
+          ></Overlay>
+          <OverlayBox data={boxData} />
+        </OverlayWrapper>
       )}
 
       <ShuffleWrapper onMouseDown={shuffleDown} onClick={shuffle}>
@@ -97,6 +98,18 @@ const Container = styled.div`
   overflow: auto;
 `;
 
+const OverlayWrapper = styled.div`
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 88px);
+  margin-top: 88px;
+`;
 const Overlay = styled(motion.div)`
   position: absolute;
   z-index: 2;
@@ -108,6 +121,9 @@ const Overlay = styled(motion.div)`
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.55);
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const Image = styled.img`

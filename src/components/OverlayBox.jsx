@@ -17,7 +17,7 @@ const OverlayBox = ({ data }) => {
           </HashWrapper>
         </RightTopContainer>
         <RightBottomContainer>
-          <Button>핀 생성</Button>
+          <Button>저장하기</Button>
         </RightBottomContainer>
       </RightWrapper>
     </Wrapper>
@@ -35,24 +35,25 @@ const Img = styled.img`
 `;
 
 const Wrapper = styled(motion.div)`
+  position: absolute;
+  z-index: 3;
   display: flex;
-  margin-top: 80px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.backgroundColor};
   width: 80%;
   height: 60%;
   max-width: 1000px;
   min-width: 400px;
+  min-height: 460px;
   border-radius: 20px 5px 5px 20px;
-  gap: 20px;
+  gap: 10px;
   justify-content: space-between;
   background: ${({ theme }) => theme.transparentColor};
-  backdrop-filter: blur(1px);
-  padding: 10px;
-  overflow-y: auto;
   transition: ${({ theme }) => theme.transitionOption};
+  backdrop-filter: blur(1px);
+  padding: 10px 10px 0px 10px;
+  overflow-y: auto;
   overflow-x: hidden;
 
   @media ${DEVICES.MOBILES} {
@@ -62,6 +63,7 @@ const Wrapper = styled(motion.div)`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    padding: 10px;
   }
 `;
 
@@ -73,7 +75,7 @@ const RightWrapper = styled.div`
   background: ${({ theme }) => theme.background};
   border-radius: 10px;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 40px);
   padding: 20px;
 `;
 
@@ -82,7 +84,7 @@ const RightWrapper = styled.div`
 const RightTopContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 `;
 
 const Title = styled.div`
@@ -133,7 +135,6 @@ const Button = styled.button`
 
 const HashWrapper = styled.div`
   display: flex;
-  padding-bottom: 10px;
   justify-content: space-between;
 `;
 
