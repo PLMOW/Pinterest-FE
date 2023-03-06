@@ -9,47 +9,34 @@ import upLightSFX from 'assets/audio/upLight.mp3';
 import cardMount from 'libs/animations/cardMount';
 import GSAP from 'constants/gsap';
 import Axios from 'libs/Axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSearchValue } from 'redux/modules/searchSlicer';
 
 const Home = () => {
-  const [datas, setDatas] = useState();
   const [shuffleDown] = useSound(downSFX);
   const [shuffleUp] = useSound(upLightSFX);
-  const api = new Axios(true);
-
-  const getImages = async () => {
-    const {
-      data: { pins },
-    } = await api.getByQuery('api/pins', {
-      q: '',
-    });
-
-    const shuffledPins = pins.sort(() => Math.random() - 0.5);
-
-    setDatas((prev) => shuffledPins);
-  };
+  const pins = useSelector((state) => state.searchSlicer);
+  console.log('home : ', pins);
+  const dispatch = useDispatch();
 
   const shuffle = () => {
     shuffleUp();
-    if (!datas) return;
-    setDatas((prev) => [...prev].sort(() => Math.random() - 0.5));
+    if (!pins) return;
+    dispatch(setSearchValue([...pins].sort(() => Math.random() - 0.5)));
   };
 
-  useEffect(() => {
-    getImages();
-  }, []);
-
   useLayoutEffect(() => {
-    if (!datas) return;
+    if (!pins[0]) return;
     cardMount();
-  }, [datas]);
+  }, [pins]);
 
   return (
     <Wrapper>
       <ShuffleWrapper onMouseDown={shuffleDown} onClick={shuffle}>
         <ShuffleIcon />
       </ShuffleWrapper>
-      {datas
-        ? [...datas].map((v, i) => {
+      {pins
+        ? [...pins].map((v, i) => {
             const { pinId, imageUrl } = v;
             return (
               <Card className={GSAP.CARD.CARD_CLASSNAME} key={pinId}>
