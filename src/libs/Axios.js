@@ -20,7 +20,7 @@ class Axios {
     this.#setInterceptor();
   }
 
-  /* Incerceptor */
+  /* Interceptor */
   #setInterceptor() {
     this.#instance.interceptors.request.use(
       this.#reqMiddleWare.bind(this),
