@@ -23,12 +23,10 @@ const Nav = () => {
     const {
       data: { pins },
     } = await api.getByQuery('api/pins', {
-      q: '',
+      keyword: searchKeyword,
     });
-    console.log('res :', pins);
 
     const shuffledPins = pins.sort(() => Math.random() - 0.5);
-    console.log('set search value :', shuffledPins);
     dispatch(setSearchValue(shuffledPins));
   };
 
