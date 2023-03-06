@@ -21,6 +21,9 @@ const GlobalStyle = createGlobalStyle`
     user-drag: none;
   }
 
+  a {
+    color: inherit;
+  }
   
   /* Scroll webkit CSS */
   *::-webkit-scrollbar {

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { LabelProps } from 'libs/client/types/formType';
 
-const Label = ({ value, errorMessage }: LabelProps) => {
+const Label = ({ value, errorMessage }) => {
   return (
     <Wrapper>
       <Title>{value}</Title>

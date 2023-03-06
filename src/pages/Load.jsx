@@ -57,8 +57,8 @@ const Load = () => {
     const myFormData = imgData;
     const myData = { title, description, hashtags };
     const json = JSON.stringify(myData);
-    const blob = new Blob([json], { type: 'application/json' });
-    myFormData.append('data', blob);
+    //const blob = new Blob([json], { type: 'application/json' });
+    myFormData.append('data', json);
 
     console.log(111, myFormData);
     const cookie = new Cookies();
