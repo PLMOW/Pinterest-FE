@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 
 const Nav = () => {
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit } = useForm();
   const api = useMemo(() => new Axios(), []);
   const dispatch = useDispatch();
 
@@ -33,7 +33,10 @@ const Nav = () => {
   };
 
   useEffect(() => {
+    //const ref = setInterval(getImages, 5000);
     getImages();
+
+    //return () => clearInterval(ref);
   }, []);
 
   return (
@@ -52,6 +55,22 @@ const Nav = () => {
       </SearchWrapper>
       <RightWrapper>
         <ThemeToggle />
+        <Link to="/signin">
+          <Svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+            />
+          </Svg>
+        </Link>
       </RightWrapper>
     </Wrapper>
   );
@@ -91,6 +110,8 @@ const LeftWrapper = styled.div`
 const RightWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
+  padding: 10px;
 `;
 
 const SearchInput = styled.input`
@@ -106,5 +127,20 @@ const SearchInput = styled.input`
   opacity: 0.6;
   :focus {
     opacity: 1;
+  }
+`;
+
+const Svg = styled.svg`
+  margin-right: 30px;
+  margin-left: 10px;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  transition: ${({ theme }) => theme.transitionOption};
+  :hover {
+    cursor: pointer;
+    background: ${({ theme }) => theme.transparentColor};
+    color: ${({ theme }) => theme.background};
   }
 `;
