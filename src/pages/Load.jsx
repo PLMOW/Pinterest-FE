@@ -86,7 +86,7 @@ const Load = () => {
     const cookie = new Cookies();
     await axios({
       method: 'POST',
-      url: `${process.env.REACT_APP_API_BASE_ROUTE}/api/pins`,
+      url: `${process.env.REACT_APP_API_BASE_ROUTE}/api/pin`,
       data: myFormData,
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -97,7 +97,7 @@ const Load = () => {
     alert('성공');
     queryClient.invalidateQueries({ queryKey: 'search' });
     setTimeout(() => {
-      navigate('/products');
+      navigate('/pins');
     }, 1500);
   };
 
