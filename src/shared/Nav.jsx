@@ -4,23 +4,51 @@ import Search from 'assets/icons/Search';
 import ThemeToggle from '../components/ThemeToggle';
 import Add from 'assets/icons/Add';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { setSearchValue } from 'redux/modules/searchSlicer';
+import Axios from 'libs/Axios';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
 
 const Nav = () => {
   const { register, handleSubmit, watch } = useForm();
+  const api = useMemo(() => new Axios(), []);
+  const dispatch = useDispatch();
 
   const onValid = (data) => {
-    console.log(1, data);
+    const { searchKeyword } = data;
+    getImages(searchKeyword);
   };
+
+  const getImages = async (searchKeyword) => {
+    const {
+      data: { pins },
+    } = await api.getByQuery('api/pins', {
+      keyword: searchKeyword,
+    });
+
+    const shuffledPins = pins.sort(() => Math.random() - 0.5);
+    dispatch(setSearchValue(shuffledPins));
+  };
+
+  useEffect(() => {
+    getImages();
+  }, []);
 
   return (
     <Wrapper>
       <LeftWrapper>
-        <Logo />
-        <Add></Add>
+        <Link to="/">
+          <Logo />
+        </Link>
+        <Link to="/upload">
+          <Add />
+        </Link>
       </LeftWrapper>
       <SearchWrapper onSubmit={handleSubmit(onValid)}>
         <Search />
-        <SearchInput {...register('search')} placeholder="search" />
+        <SearchInput {...register('searchKeyword')} placeholder="search" />
       </SearchWrapper>
       <RightWrapper>
         <ThemeToggle />
@@ -34,7 +62,7 @@ export default Nav;
 const Wrapper = styled.div`
   padding: 4px 16px;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   top: 0;
   left: 0%;
   width: 100%;
@@ -57,6 +85,7 @@ const SearchWrapper = styled.form`
 
 const LeftWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const RightWrapper = styled.div`

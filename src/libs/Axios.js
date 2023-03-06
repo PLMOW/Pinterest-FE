@@ -20,7 +20,7 @@ class Axios {
     this.#setInterceptor();
   }
 
-  /* Incerceptor */
+  /* Interceptor */
   #setInterceptor() {
     this.#instance.interceptors.request.use(
       this.#reqMiddleWare.bind(this),
@@ -57,7 +57,6 @@ class Axios {
 
   /* Res */
   #resMiddleWare(res) {
-    this.#instance.interceptors.response.use();
     const { authorization, refreshtoken } = res.headers;
 
     if (authorization) {
@@ -79,6 +78,8 @@ class Axios {
         expires: validUntil,
       });
     }
+
+    return res;
   }
 
   #resOnError(error) {}
@@ -87,7 +88,7 @@ class Axios {
    * @param {string} endPoint
    */
   get(endPoint) {
-    this.#instance({
+    return this.#instance({
       method: METHOD.GET,
       url: endPoint,
     });
@@ -98,7 +99,7 @@ class Axios {
    * @param {string} query
    */
   getByQuery(endPoint, query) {
-    this.#instance({
+    return this.#instance({
       method: METHOD.GET,
       url: endPoint,
       params: {
@@ -112,7 +113,7 @@ class Axios {
    * @param {string} query
    */
   getByParams(endPoint, params) {
-    this.#instance({
+    return this.#instance({
       method: METHOD.GET,
       url: `${endPoint}/${params}`,
     });
@@ -123,7 +124,7 @@ class Axios {
    * @param {object} data
    */
   post(endPoint, data) {
-    this.#instance({
+    return this.#instance({
       method: METHOD.POST,
       url: `${endPoint}`,
       data,
@@ -136,7 +137,7 @@ class Axios {
    * @param {object} data
    */
   put(endPoint, id, data) {
-    this.#instance({
+    return this.#instance({
       method: METHOD.PUT,
       url: `${endPoint}/${id}`,
       data,
@@ -148,7 +149,7 @@ class Axios {
    * @param {number} id
    */
   delete(endPoint, id) {
-    this.#instance({
+    return this.#instance({
       method: METHOD.DELETE,
       url: `${endPoint}/${id}`,
     });
