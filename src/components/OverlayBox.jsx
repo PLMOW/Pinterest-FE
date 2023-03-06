@@ -3,20 +3,17 @@ import DEVICES from 'styles/mediaQuery';
 import { motion } from 'framer-motion';
 
 const OverlayBox = ({ data }) => {
-  console.log(data);
+  const { title, imageUrl, description, hashtags } = data;
+
   return (
     <Wrapper>
-      <Img />
+      <Img src={imageUrl} />
       <RightWrapper>
         <RightTopContainer>
-          <InputTitle placeholder="제목 추가"></InputTitle>
-          <Description
-            placeholder="핀에 대해 설명해보세요!"
-            spellCheck="false"
-          ></Description>
+          <Title>{title}</Title>
+          <Description>{description}</Description>
           <HashWrapper>
-            <HashInput placeholder="#해시태그" />
-            <HashSubmit>추가</HashSubmit>
+            <Hashs>#{hashtags}</Hashs>
           </HashWrapper>
         </RightTopContainer>
         <RightBottomContainer>
@@ -33,48 +30,51 @@ export default OverlayBox;
 const Img = styled.img`
   object-fit: cover;
   background: white;
-  width: 100%;
+  border-radius: 10px;
+  height: 100%;
 `;
-
-///
 
 const Wrapper = styled(motion.div)`
   display: flex;
   margin-top: 80px;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background: ${({ theme }) => theme.backgroundColor};
   width: 80%;
   height: 60%;
   max-width: 1000px;
   min-width: 400px;
-  border-radius: 20px;
+  border-radius: 20px 5px 5px 20px;
   gap: 20px;
   justify-content: space-between;
+  background: ${({ theme }) => theme.transparentColor};
+  backdrop-filter: blur(1px);
+  padding: 10px;
+  overflow-y: auto;
+  transition: ${({ theme }) => theme.transitionOption};
+  overflow-x: hidden;
 
   @media ${DEVICES.MOBILES} {
-    background: teal;
-    padding: 10px;
   }
 
   @media ${DEVICES.MOBILEM} {
     display: flex;
     flex-direction: row;
-    padding: 20px;
+    align-items: flex-start;
   }
 `;
-
-const Des = styled.div`
-  background: bisque;
-  width: 100%;
-`;
-
-////
 
 /* FormRight */
 const RightWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: ${({ theme }) => theme.background};
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
 `;
 
 /* Right-Top */
@@ -85,29 +85,29 @@ const RightTopContainer = styled.div`
   gap: 30px;
 `;
 
-const InputTitle = styled.input`
-  padding: 10px;
+const Title = styled.div`
+  padding: 15px;
   font-weight: 600;
   border: none;
   outline: none;
   background: transparent;
   border-bottom: solid 2px lightgray;
   font-size: 30px;
-  width: 300px;
 `;
 
-const Description = styled.textarea`
+const Description = styled.div`
   padding: 10px;
   font-size: 15px;
   border: none;
   outline: none;
-  background: transparent;
   border: solid 2px lightgray;
   border-radius: 5px;
-  min-width: 300px;
-  max-width: 300px;
   min-height: 200px;
   max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: ${({ theme }) => theme.transparentColor};
+  color: ${({ theme }) => theme.transparentBackground};
 `;
 
 /* Right-Bottom */
@@ -133,17 +133,20 @@ const Button = styled.button`
 
 const HashWrapper = styled.div`
   display: flex;
+  padding-bottom: 10px;
   justify-content: space-between;
 `;
 
-const HashInput = styled.input.attrs({ type: 'text' })`
+const Hashs = styled.div`
   padding: 10px;
   font-weight: 500;
   border: none;
   outline: none;
   background: transparent;
-  border-bottom: solid 2px lightgray;
-  width: 200px;
+  background: rgba(0, 0, 0, 0.3);
+  color: whitesmoke;
+  font-weight: 600;
+  border-radius: 5px;
 `;
 
 const HashSubmit = styled.div`
