@@ -13,6 +13,7 @@ import { overlayToggle } from 'redux/modules/overlayToggle';
 import { setBoxData } from 'redux/modules/boxDataSlicer';
 import OverlayBox from 'components/OverlayBox';
 import { motion } from 'framer-motion';
+import EndData from 'components/EndData';
 
 const Home = () => {
   const [shuffleDown] = useSound(downSFX);
@@ -21,7 +22,6 @@ const Home = () => {
   const overlayToggleState = useSelector((state) => state.overlaySlicer);
   const boxData = useSelector((state) => state.boxDataSlicer);
   const dispatch = useDispatch();
-
   const shuffle = () => {
     shuffleUp();
     if (!pins) return;
@@ -78,6 +78,7 @@ const Home = () => {
               );
             })
           : ''}
+        <EndData />
       </Wrapper>
     </Container>
   );
