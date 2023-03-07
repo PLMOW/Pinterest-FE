@@ -4,7 +4,6 @@ import Home from 'pages/Home';
 import Load from 'pages/Load';
 import Login from 'pages/Login';
 import Signin from 'pages/Signin';
-import Test from 'pages/Test';
 
 const Router = () => {
   return (
@@ -14,7 +13,6 @@ const Router = () => {
       <Route path="/upload" element={<Load />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signin" element={<Signin />} />
-      <Route path="/test" element={<Test />} />
     </Routes>
   );
 };

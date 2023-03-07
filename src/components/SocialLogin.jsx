@@ -24,13 +24,17 @@ const Wrapper = styled.div`
 `;
 
 const Button = styled.div`
+  margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
   background: ${({ theme }) => theme.color};
   color: ${({ theme }) => theme.background};
   margin-top: 20px;
-
+  border: solid 2px ${({ theme }) => theme.color};
+  transition: ${({ theme }) => theme.transitionOption};
   :hover {
+    background: ${({ theme }) => theme.background};
+    color: ${({ theme }) => theme.color};
     cursor: pointer;
   }
 `;

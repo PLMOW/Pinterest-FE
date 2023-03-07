@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Axios from 'libs/Axios';
 import { useMemo } from 'react';
+import SocialLogin from 'components/SocialLogin';
 
 const Login = () => {
   const [_, setCookie] = useCookies();
@@ -84,6 +85,7 @@ const Login = () => {
           </Form>
         </TopWrapper>
         <BottomWrapper>
+          <SocialLogin />
           <SocialText>If you already have account?</SocialText>
           <a href="/signin">Sign in</a>
         </BottomWrapper>
