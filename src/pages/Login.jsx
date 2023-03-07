@@ -5,7 +5,6 @@ import ReactHookInput from 'components/form/ReactHookInput';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Axios from 'libs/Axios';
@@ -85,8 +84,8 @@ const Login = () => {
           </Form>
         </TopWrapper>
         <BottomWrapper>
-          <SocialText>LogIn with Social</SocialText>
-          <a href="/login">login</a>
+          <SocialText>If you already have account?</SocialText>
+          <a href="/signin">Sign in</a>
         </BottomWrapper>
       </Container>
     </>
@@ -107,8 +106,8 @@ const BottomWrapper = styled.div`
 `;
 
 const SocialText = styled.div`
-  margin-bottom: 10px;
-  font-weight: 600;
+  margin-bottom: 5px;
+  font-weight: 500;
   opacity: 0.7;
 `;
 
@@ -137,6 +136,7 @@ const Container = styled(motion.div)`
   justify-content: space-between;
   align-items: center;
   transition: ${({ theme }) => theme.transitionOption};
+  margin-top: 45px;
 `;
 
 const Title = styled.div`
