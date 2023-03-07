@@ -57,7 +57,6 @@ const Signin = () => {
             />
             <Submit>create</Submit>
           </Form>
-          <SocialText>SignIn with Social</SocialText>
         </TopWrapper>
         <BottomWrapper>
           <SocialText>Or Sign Up Using</SocialText>
@@ -112,6 +111,7 @@ const Container = styled(motion.div)`
   justify-content: space-between;
   align-items: center;
   transition: ${({ theme }) => theme.transitionOption};
+  margin-top: 45px;
 `;
 
 const Title = styled.div`
