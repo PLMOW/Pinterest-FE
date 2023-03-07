@@ -60,7 +60,6 @@ const Load = () => {
     //const blob = new Blob([json], { type: 'application/json' });
     myFormData.append('data', json);
 
-    console.log(111, myFormData);
     const cookie = new Cookies();
     const res = await axios({
       method: 'POST',
@@ -72,9 +71,11 @@ const Load = () => {
       },
     });
 
+    console.log(res);
+
     toast.success('핀 생성 완료!');
     setTimeout(() => {
-      navigate('/pins');
+      navigate('/');
     }, 1500);
   };
 
