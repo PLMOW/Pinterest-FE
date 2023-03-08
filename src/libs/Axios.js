@@ -53,7 +53,9 @@ class Axios {
     return newConfig;
   }
 
-  #reqOnError(error) {}
+  #reqOnError(error) {
+    return Promise.reject(error);
+  }
 
   /* Res */
   #resMiddleWare(res) {
@@ -82,7 +84,9 @@ class Axios {
     return res;
   }
 
-  #resOnError(error) {}
+  #resOnError(error) {
+    return Promise.reject(error);
+  }
 
   /**
    * @param {string} endPoint
