@@ -21,7 +21,7 @@ const Load = () => {
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    //routeSpy();
+    routeSpy();
   }, []);
 
   const handleUpload = (e) => {
