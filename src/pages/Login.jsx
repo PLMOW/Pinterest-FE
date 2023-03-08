@@ -12,10 +12,13 @@ import { useMemo } from 'react';
 import SocialLogin from 'components/SocialLogin';
 import { Cookies } from 'react-cookie';
 import { KEY, EXPIRE } from 'constants/cookie';
+import { setLogin } from 'redux/modules/loginSlicer';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const [_, setCookie] = useCookies();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -32,7 +35,6 @@ const Login = () => {
       const {
         data: { userId, token },
       } = res;
-
       const cookie = new Cookies();
       const validUntil = new Date();
       validUntil.setTime(new Date().getTime() + EXPIRE.ACCESS_TOKEN);
@@ -42,6 +44,8 @@ const Login = () => {
       });
 
       localStorage.setItem('userInfo', JSON.stringify({ userId }));
+      dispatch(setLogin(true));
+
       toast.success('로그인 성공!', {
         autoClose: 3000,
         closeOnClick: true,

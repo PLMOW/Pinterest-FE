@@ -10,11 +10,18 @@ import Axios from 'libs/Axios';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
+import { Cookies } from 'react-cookie';
+import { KEY } from 'constants/cookie';
+import { useSelector } from 'react-redux';
+import { isLogin } from 'redux/store';
 
 const Nav = () => {
   const { register, handleSubmit } = useForm();
   const api = useMemo(() => new Axios(), []);
   const dispatch = useDispatch();
+  const cookie = new Cookies();
+  const token = cookie.get(KEY.ACCESS_TOKEN);
+  const isLogin = useSelector((state) => state.loginSlicer);
 
   const onValid = (data) => {
     const { searchKeyword } = data;
@@ -33,10 +40,7 @@ const Nav = () => {
   };
 
   useEffect(() => {
-    //const ref = setInterval(getImages, 5000);
     getImages();
-
-    //return () => clearInterval(ref);
   }, []);
 
   return (
@@ -55,7 +59,7 @@ const Nav = () => {
       </SearchWrapper>
       <RightWrapper>
         <ThemeToggle />
-        <Link to="/login">
+        {isLogin ? (
           <Svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -67,10 +71,27 @@ const Nav = () => {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+              d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
             />
           </Svg>
-        </Link>
+        ) : (
+          <Link to="/login">
+            <Svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+              />
+            </Svg>
+          </Link>
+        )}
       </RightWrapper>
     </Wrapper>
   );
