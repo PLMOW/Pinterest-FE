@@ -1,14 +1,10 @@
 import styled from 'styled-components';
-import { useInView } from 'react-intersection-observer';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 const EndData = () => {
-  const { ref, inView } = useInView({
-    threshold: 0,
-  });
+  const [ref, isLoading] = useInfiniteScroll();
 
-  console.log(inView);
-
-  return <Wrapper ref={ref}>{inView.toString()}</Wrapper>;
+  return <>{isLoading ? <>Loading</> : <Wrapper ref={ref}></Wrapper>}</>;
 };
 
 export default EndData;
