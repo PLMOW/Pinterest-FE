@@ -62,7 +62,7 @@ const Home = () => {
       </ShuffleWrapper>
       <Wrapper>
         {pins
-          ? [...pins].map((v) => {
+          ? [...pins].map((v, i) => {
               const { pinId, imageUrl } = v;
               return (
                 <Card
@@ -71,7 +71,7 @@ const Home = () => {
                   }}
                   data={v}
                   className={GSAP.CARD.CARD_CLASSNAME}
-                  key={pinId}
+                  key={`${pinId}_${i}`}
                 >
                   <Image src={imageUrl} />
                 </Card>
