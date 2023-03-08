@@ -154,6 +154,7 @@ const Wrapper = styled.div`
   margin-top: 88px;
   padding: 10px;
   overflow: auto;
+  width: 100%;
 
   @media ${DEVICES.MOBILES} {
     column-count: 2;
