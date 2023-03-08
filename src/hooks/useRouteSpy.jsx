@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import Axios from 'libs/Axios';
+import { COOKIE } from 'constants/cookie';
 
 const AUTH_ROUTE = Object.freeze(['upload', 'user']);
 
@@ -14,10 +15,10 @@ const useRouteSpy = (route, redirectRoute) => {
   const api = new Axios();
   const navigate = useNavigate();
   const cookie = new Cookies();
-  const token = !!cookie.get('ACCESS_TOKEN');
+  const token = !!cookie.get(COOKIE.KEY.ACCESS_TOKEN);
 
   const checkAuth = async () => {
-    return await api.getByParams('api/checkAuth', token);
+    return await api('api/checkAuth', token);
   };
   const { data: isValid } = checkAuth();
 
