@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Axios from 'libs/Axios';
 import { useMemo } from 'react';
 import SocialLogin from 'components/SocialLogin';
+import { Cookies } from 'react-cookie';
+import { KEY, EXPIRE } from 'constants/cookie';
 
 const Login = () => {
   const [_, setCookie] = useCookies();
@@ -27,16 +29,20 @@ const Login = () => {
 
   const { mutate, data, isLoading } = useMutation(getLogin, {
     onSuccess: (res) => {
-      const myToken = res.headers['authorization'];
-      const userInfo = res.data;
-      let validUntil = new Date();
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      validUntil.setHours(new Date().getHours() + 1);
-      setCookie('ACCESS_TOKEN', myToken, {
+      const {
+        data: { userId, token },
+      } = res;
+
+      const cookie = new Cookies();
+      const validUntil = new Date();
+      validUntil.setTime(new Date().getTime() + EXPIRE.ACCESS_TOKEN);
+      cookie.set(KEY.ACCESS_TOKEN, token, {
         path: '/',
         expires: validUntil,
       });
-      toast.success('Login Query Fulfilled!', {
+
+      localStorage.setItem('userInfo', JSON.stringify({ userId }));
+      toast.success('로그인 성공!', {
         autoClose: 3000,
         closeOnClick: true,
         pauseOnHover: true,
@@ -48,14 +54,13 @@ const Login = () => {
       }, 1500);
     },
     onError: (err) => {
-      toast.error('Login Query Rejected', {
+      toast.error('ID 또는 PW가 잘못되었습니다!', {
         autoClose: 3000,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
       });
-      console.log('Login Query Rejected');
     },
   });
 
