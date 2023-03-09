@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect, memo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useRouteSpy from 'hooks/useRouteSpy';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { ToastContainer, toast } from 'react-toastify';
