@@ -60,7 +60,8 @@ const Nav = () => {
 
   useEffect(() => {
     getImages();
-    checkLogin();
+    const intervalRef = setInterval(checkLogin(), 1000 * 60);
+    return () => clearInterval(intervalRef);
   }, []);
 
   return (
