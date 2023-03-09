@@ -14,6 +14,9 @@ import { setBoxData } from 'redux/modules/boxDataSlicer';
 import OverlayBox from 'components/OverlayBox';
 import { motion } from 'framer-motion';
 import EndData from 'components/EndData';
+import SavedBoard from 'components/SavedBoard';
+import Saved from 'assets/icons/Saved';
+import { savedToggle } from 'redux/modules/savedToggleSlicer';
 
 const Home = () => {
   const [shuffleDown] = useSound(downSFX);
@@ -23,6 +26,12 @@ const Home = () => {
   const boxData = useSelector((state) => state.boxDataSlicer);
   const dispatch = useDispatch();
   const onObserve = useSelector((state) => state.observeSlicer);
+  const isOpen = useSelector(({ savedSlicer }) => savedSlicer);
+
+  const SaveToggle = () => {
+    console.log(isOpen);
+    dispatch(savedToggle());
+  };
 
   const shuffle = () => {
     shuffleUp();
@@ -62,6 +71,12 @@ const Home = () => {
       <ShuffleWrapper onMouseDown={shuffleDown} onClick={shuffle}>
         <ShuffleIcon />
       </ShuffleWrapper>
+
+      <SavedWrapper onClick={SaveToggle}>
+        <Saved isOpen={isOpen} />
+      </SavedWrapper>
+      {isOpen ? <SavedBoard /> : null}
+
       <Wrapper>
         {pins
           ? [...pins].map((v, i) => {
@@ -90,15 +105,15 @@ export default Home;
 
 const overlayVariants = {
   from: { opacity: 0 },
-  to: { opacity: 1, transition: { duration: 0.15 } },
-  exit: { opacity: 0, transition: { duration: 0.35 } },
+  to: { opacity: 1, transition: { duration: 0.1 } },
+  exit: { opacity: 0, transition: { duration: 0.1 } },
 };
 
 const Container = styled.div`
   position: relative;
   display: flex;
   height: 100vh;
-  overflow: auto;
+  overflow: hidden;
 `;
 
 const OverlayWrapper = styled.div`
@@ -189,15 +204,34 @@ const Wrapper = styled.div`
 
 const ShuffleWrapper = styled.div`
   position: fixed;
-  left: 10px;
+  left: 20px;
   bottom: 10px;
-  z-index: 1;
+  z-index: 2;
   background: white;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
   transition: ${({ theme }) => theme.transitionOption};
+  background: ${({ theme }) => theme.color};
+  color: ${({ theme }) => theme.background};
+  :hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.55);
+    transform: scale(1.02);
+    opacity: 1;
+    cursor: pointer;
+  }
+`;
 
+const SavedWrapper = styled.div`
+  position: fixed;
+  right: 20px;
+  bottom: 10px;
+  z-index: 2;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: ${({ theme }) => theme.transitionOption};
   background: ${({ theme }) => theme.color};
   color: ${({ theme }) => theme.background};
   :hover {
