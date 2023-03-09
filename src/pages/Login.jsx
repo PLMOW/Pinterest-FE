@@ -94,7 +94,6 @@ const Login = () => {
           </Form>
         </TopWrapper>
         <BottomWrapper>
-          <SocialLogin />
           <SocialText>If you already have account?</SocialText>
           <a href="/signin">Sign in</a>
         </BottomWrapper>
