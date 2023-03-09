@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { overlayToggle } from 'redux/modules/overlayToggle';
 import { setBoxData } from 'redux/modules/boxDataSlicer';
+import { savedToggle } from 'redux/modules/savedToggleSlicer';
 
 const Card = ({ pinData }) => {
   const { title, imageUrl } = pinData;
@@ -10,6 +11,11 @@ const Card = ({ pinData }) => {
   const cardOpenHandler = (v) => {
     dispatch(overlayToggle());
     dispatch(setBoxData(v));
+    dispatch(SaveToggle());
+  };
+
+  const SaveToggle = () => {
+    dispatch(savedToggle());
   };
 
   return (
