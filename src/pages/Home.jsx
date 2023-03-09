@@ -17,6 +17,8 @@ import EndData from 'components/EndData';
 import SavedBoard from 'components/SavedBoard';
 import Saved from 'assets/icons/Saved';
 import { savedToggle } from 'redux/modules/savedToggleSlicer';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [shuffleDown] = useSound(downSFX);
@@ -27,6 +29,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const onObserve = useSelector((state) => state.observeSlicer);
   const isOpen = useSelector(({ savedSlicer }) => savedSlicer);
+  const navigate = useNavigate();
 
   const SaveToggle = () => {
     dispatch(savedToggle());
@@ -80,10 +83,17 @@ const Home = () => {
         {pins
           ? [...pins].map((v, i) => {
               const { pinId, imageUrl } = v;
+
               return (
                 <Card
                   onClick={() => {
-                    cardOpenHandler(v);
+                    if (localStorage.getItem('userInfo'))
+                      return cardOpenHandler(v);
+
+                    toast.success('로그인을 해주세요!');
+                    setTimeout(() => {
+                      navigate('/login');
+                    }, 500);
                   }}
                   data={v}
                   className={GSAP.CARD.CARD_CLASSNAME}
