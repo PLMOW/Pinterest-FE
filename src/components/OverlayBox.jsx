@@ -1,12 +1,38 @@
 import styled from 'styled-components';
 import DEVICES from 'styles/mediaQuery';
 import { AnimatePresence, motion } from 'framer-motion';
+import Axios from 'libs/Axios';
+import { useMemo } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const OverlayBox = ({ data }) => {
-  const { title, imageUrl, description, hashtags } = data;
+  const { title, imageUrl, description, hashtags, pinId, userId, createdAt } =
+    data;
+  const { userId: currUserId } = JSON.parse(localStorage.getItem('userInfo'));
+  const api = useMemo(() => new Axios(true), []);
+
+  const savePin = async () => {
+    console.log('save');
+  };
+
+  const deletePin = async () => {
+    await api.delete('api/pins', pinId);
+    toast.success('핀이 삭제되었습니다!', {
+      autoClose: 3000,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
 
   return (
     <AnimatePresence>
+      <ToastContainer />
       <Wrapper
         variants={overlayVariants}
         initial="from"
@@ -23,7 +49,12 @@ const OverlayBox = ({ data }) => {
             </HashWrapper>
           </RightTopContainer>
           <RightBottomContainer>
-            <Button>저장하기</Button>
+            <Button onClick={savePin}>저장하기</Button>
+            {userId === currUserId ? (
+              <Button onClick={deletePin}>삭제하기</Button>
+            ) : (
+              ''
+            )}
           </RightBottomContainer>
         </RightWrapper>
       </Wrapper>
@@ -129,6 +160,7 @@ const Description = styled.div`
 
 const RightBottomContainer = styled.div`
   display: flex;
+  gap: 20px;
 `;
 
 const Button = styled.button`
