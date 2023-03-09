@@ -2,24 +2,64 @@ import styled from 'styled-components';
 import DEVICES from 'styles/mediaQuery';
 import { AnimatePresence, motion } from 'framer-motion';
 import Axios from 'libs/Axios';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 const OverlayBox = ({ data }) => {
-  const { title, imageUrl, description, hashtags, pinId, userId, createdAt } =
-    data;
+  const [isSavedPin, setIsSavedPin] = useState(false);
+  const {
+    title,
+    imageUrl,
+    description,
+    hashtags,
+    pinId,
+    userId,
+    Saves: saves,
+  } = data;
+
   const { userId: currUserId } = JSON.parse(localStorage.getItem('userInfo'));
   const api = useMemo(() => new Axios(true), []);
 
+  const checkDuplicated = (saves, currUserId) => {
+    console.log('start', saves);
+    saves.forEach(({ userId }) => {
+      if (userId === currUserId) setIsSavedPin(true);
+    });
+    saves.includes(currUserId);
+  };
+
   const savePin = async () => {
-    console.log('save');
+    await api.put('api/save/pins', pinId);
+    toast.success('핀이 저장되었습니다!', {
+      autoClose: 500,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
+
+  const removePin = async () => {
+    await api.put('api/save/pins', pinId);
+    toast.success('핀이 제거되었습니다!', {
+      autoClose: 500,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   const deletePin = async () => {
     await api.delete('api/pins', pinId);
     toast.success('핀이 삭제되었습니다!', {
-      autoClose: 3000,
+      autoClose: 500,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
@@ -30,35 +70,45 @@ const OverlayBox = ({ data }) => {
     }, 1000);
   };
 
+  useEffect(() => {
+    checkDuplicated(saves, currUserId);
+  }, []);
+
   return (
-    <AnimatePresence>
+    <>
       <ToastContainer />
-      <Wrapper
-        variants={overlayVariants}
-        initial="from"
-        animate="to"
-        exit="exit"
-      >
-        <Img src={imageUrl} />
-        <RightWrapper>
-          <RightTopContainer>
-            <Title>{title}</Title>
-            <Description>{description}</Description>
-            <HashWrapper>
-              <Hashs>#{hashtags}</Hashs>
-            </HashWrapper>
-          </RightTopContainer>
-          <RightBottomContainer>
-            <Button onClick={savePin}>저장하기</Button>
-            {userId === currUserId ? (
-              <Button onClick={deletePin}>삭제하기</Button>
-            ) : (
-              ''
-            )}
-          </RightBottomContainer>
-        </RightWrapper>
-      </Wrapper>
-    </AnimatePresence>
+      <AnimatePresence>
+        <Wrapper
+          variants={overlayVariants}
+          initial="from"
+          animate="to"
+          exit="exit"
+        >
+          <Img src={imageUrl} />
+          <RightWrapper>
+            <RightTopContainer>
+              <Title>{title}</Title>
+              <Description>{description}</Description>
+              <HashWrapper>
+                <Hashs>#{hashtags}</Hashs>
+              </HashWrapper>
+            </RightTopContainer>
+            <RightBottomContainer>
+              {isSavedPin ? (
+                <Button onClick={removePin}>핀에서 제거</Button>
+              ) : (
+                <Button onClick={savePin}>핀 저장</Button>
+              )}
+              {userId === currUserId ? (
+                <Button onClick={deletePin}>삭제하기</Button>
+              ) : (
+                ''
+              )}
+            </RightBottomContainer>
+          </RightWrapper>
+        </Wrapper>
+      </AnimatePresence>
+    </>
   );
 };
 
