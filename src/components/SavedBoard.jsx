@@ -2,26 +2,19 @@ import styled from 'styled-components';
 import DEVICES from 'styles/mediaQuery';
 import { AnimatePresence, motion } from 'framer-motion';
 import Axios from 'libs/Axios';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import Card from 'components/Card';
 
 const SavedBoard = () => {
   const api = useMemo(() => new Axios(true), []);
-
+  const [pinData, setPinData] = useState();
   const getSavedPin = async () => {
-    const { data } = await api.get('api/save');
+    const {
+      data: { data },
+    } = await api.get('api/save');
     console.log(data);
-  };
-
-  const deleteSavedPin = async (pinId) => {
-    await api.put('api/save/pins', pinId);
-    toast.success('핀이 저장되었습니다!', {
-      autoClose: 1500,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    setPinData((prev) => data);
   };
 
   useEffect(() => {
@@ -38,7 +31,11 @@ const SavedBoard = () => {
           animate="to"
           exit="exit"
         >
-          CARDS
+          <Board>
+            {pinData?.map((v) => (
+              <Card key={v.pinId} pinData={v} />
+            ))}
+          </Board>
         </Wrapper>
       </AnimatePresence>
     </>
@@ -53,6 +50,16 @@ const overlayVariants = {
   exit: { opacity: 0, right: 100, transition: { duration: 0.35 } },
 };
 
+const Board = styled.div`
+  padding-right: 10px;
+  width: 100%;
+  height: calc(100% - 20px);
+  border-radius: 10px 0 0 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 const Wrapper = styled(motion.div)`
   position: absolute;
   z-index: 1;
