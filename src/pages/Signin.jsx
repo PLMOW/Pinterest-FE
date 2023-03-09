@@ -5,6 +5,7 @@ import ReactHookInput from 'components/form/ReactHookInput';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'libs/Axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -21,11 +22,25 @@ const Signin = () => {
 
   const { mutate, data, isLoading } = useMutation(getSignIn, {
     onSuccess: () => {
-      console.log('Query Fulfilled!');
-      navigate('/login');
+      toast.success('회원가입 성공!', {
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
     },
     onError: (err) => {
-      console.log('Query Rejected');
+      toast.error('이미 존재하는 아이디입니다!', {
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     },
   });
 
@@ -36,6 +51,7 @@ const Signin = () => {
 
   return (
     <>
+      <ToastContainer />
       <Container>
         <TopWrapper>
           <Title>Sign in</Title>

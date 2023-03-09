@@ -4,7 +4,7 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 const EndData = () => {
   const [ref, isLoading] = useInfiniteScroll();
 
-  return <>{isLoading ? <>Loading</> : <Wrapper ref={ref}></Wrapper>}</>;
+  return <>{isLoading ? <></> : <Wrapper ref={ref}></Wrapper>}</>;
 };
 
 export default EndData;

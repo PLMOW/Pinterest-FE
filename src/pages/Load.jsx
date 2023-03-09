@@ -11,6 +11,7 @@ import Upload from 'assets/icons/Upload';
 import Exit from 'assets/icons/Exit';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { KEY } from 'constants/cookie';
 
 const Load = () => {
   const route = useLocation();
@@ -21,7 +22,7 @@ const Load = () => {
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    //routeSpy();
+    routeSpy();
   }, []);
 
   const handleUpload = (e) => {
@@ -61,17 +62,15 @@ const Load = () => {
     myFormData.append('data', json);
 
     const cookie = new Cookies();
-    const res = await axios({
+    await axios({
       method: 'POST',
       url: `${process.env.REACT_APP_API_BASE_ROUTE}api/pins`,
       data: myFormData,
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `${cookie.get('ACCESS_TOKEN')}`,
+        Authorization: `${cookie.get(`${KEY.ACCESS_TOKEN}`)}`,
       },
     });
-
-    console.log(res);
 
     toast.success('핀 생성 완료!');
     setTimeout(() => {
@@ -81,8 +80,7 @@ const Load = () => {
 
   return (
     <Wrapper>
-      <ToastContainer position="bottom-right" theme="light" />
-
+      <ToastContainer />
       <Form onSubmit={handleSubmit(onValid)}>
         <FormNav>
           <Link to="/">

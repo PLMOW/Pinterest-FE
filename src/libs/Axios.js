@@ -53,21 +53,13 @@ class Axios {
     return newConfig;
   }
 
-  #reqOnError(error) {}
+  #reqOnError(error) {
+    return Promise.reject(error);
+  }
 
   /* Res */
   #resMiddleWare(res) {
-    const { authorization, refreshtoken } = res.headers;
-
-    if (authorization) {
-      const validUntil = new Date();
-      validUntil.setTime(new Date().getTime() + EXPIRE.ACCESS_TOKEN);
-
-      this.#cookie.set(KEY.ACCESS_TOKEN, authorization, {
-        path: '/',
-        expires: validUntil,
-      });
-    }
+    const { refreshtoken } = res.headers;
 
     if (refreshtoken) {
       const validUntil = new Date();
@@ -82,7 +74,9 @@ class Axios {
     return res;
   }
 
-  #resOnError(error) {}
+  #resOnError(error) {
+    return Promise.reject(error);
+  }
 
   /**
    * @param {string} endPoint

@@ -2,6 +2,7 @@ import { useInView } from 'react-intersection-observer';
 import Axios from 'libs/Axios';
 import { useEffect, useState, useMemo } from 'react';
 import { setSearchValue } from 'redux/modules/searchSlicer';
+import { setObserve } from 'redux/modules/observeSlicer';
 import { useDispatch, useSelector } from 'react-redux';
 
 const useInfiniteScroll = () => {
@@ -20,6 +21,8 @@ const useInfiniteScroll = () => {
     const {
       data: { pins: data },
     } = await api.getByQuery('api/pins', { index });
+
+    if (data.length !== 30) dispatch(setObserve(false));
     dispatch(setSearchValue([...pins, ...data]));
     setIsLoading((prev) => false);
   };

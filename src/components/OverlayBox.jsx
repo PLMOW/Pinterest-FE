@@ -1,33 +1,113 @@
 import styled from 'styled-components';
 import DEVICES from 'styles/mediaQuery';
 import { AnimatePresence, motion } from 'framer-motion';
+import Axios from 'libs/Axios';
+import { useEffect, useMemo, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 const OverlayBox = ({ data }) => {
-  const { title, imageUrl, description, hashtags } = data;
+  const [isSavedPin, setIsSavedPin] = useState(false);
+  const {
+    title,
+    imageUrl,
+    description,
+    hashtags,
+    pinId,
+    userId,
+    Saves: saves,
+  } = data;
+
+  const { userId: currUserId } = JSON.parse(localStorage.getItem('userInfo'));
+  const api = useMemo(() => new Axios(true), []);
+
+  const checkDuplicated = (saves, currUserId) => {
+    saves.forEach(({ userId }) => {
+      if (userId === currUserId) setIsSavedPin(true);
+    });
+    saves.includes(currUserId);
+  };
+
+  const savePin = async () => {
+    await api.put('api/save/pins', pinId);
+    toast.success('핀이 저장되었습니다!', {
+      autoClose: 500,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
+
+  const removePin = async () => {
+    await api.put('api/save/pins', pinId);
+    toast.success('핀이 제거되었습니다!', {
+      autoClose: 500,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
+
+  const deletePin = async () => {
+    await api.delete('api/pins', pinId);
+    toast.success('핀이 삭제되었습니다!', {
+      autoClose: 500,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  useEffect(() => {
+    checkDuplicated(saves, currUserId);
+  }, []);
 
   return (
-    <AnimatePresence>
-      <Wrapper
-        variants={overlayVariants}
-        initial="from"
-        animate="to"
-        exit="exit"
-      >
-        <Img src={imageUrl} />
-        <RightWrapper>
-          <RightTopContainer>
-            <Title>{title}</Title>
-            <Description>{description}</Description>
-            <HashWrapper>
-              <Hashs>#{hashtags}</Hashs>
-            </HashWrapper>
-          </RightTopContainer>
-          <RightBottomContainer>
-            <Button>저장하기</Button>
-          </RightBottomContainer>
-        </RightWrapper>
-      </Wrapper>
-    </AnimatePresence>
+    <>
+      <ToastContainer />
+      <AnimatePresence>
+        <Wrapper
+          variants={overlayVariants}
+          initial="from"
+          animate="to"
+          exit="exit"
+        >
+          <Img src={imageUrl} />
+          <RightWrapper>
+            <RightTopContainer>
+              <Title>{title}</Title>
+              <Description>{description}</Description>
+              <HashWrapper>
+                <Hashs>#{hashtags}</Hashs>
+              </HashWrapper>
+            </RightTopContainer>
+            <RightBottomContainer>
+              {isSavedPin ? (
+                <Button onClick={removePin}>핀에서 제거</Button>
+              ) : (
+                <Button onClick={savePin}>핀 저장</Button>
+              )}
+              {userId === currUserId ? (
+                <Button onClick={deletePin}>삭제하기</Button>
+              ) : (
+                ''
+              )}
+            </RightBottomContainer>
+          </RightWrapper>
+        </Wrapper>
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -49,7 +129,7 @@ const Img = styled.img`
 
 const Wrapper = styled(motion.div)`
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,6 +209,7 @@ const Description = styled.div`
 
 const RightBottomContainer = styled.div`
   display: flex;
+  gap: 20px;
 `;
 
 const Button = styled.button`

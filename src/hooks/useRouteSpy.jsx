@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import Axios from 'libs/Axios';
+import { COOKIE } from 'constants/cookie';
+import { useEffect, useState } from 'react';
 
-const AUTH_ROUTE = Object.freeze(['upload', 'user']);
+const AUTH_ROUTE = Object.freeze(['/upload']);
 
 /**
  * @param route string;
@@ -11,20 +13,24 @@ const AUTH_ROUTE = Object.freeze(['upload', 'user']);
  */
 
 const useRouteSpy = (route, redirectRoute) => {
-  const api = new Axios();
+  const [isValid, setIsValid] = useState(false);
+  const api = new Axios(true);
   const navigate = useNavigate();
-  const cookie = new Cookies();
-  const token = !!cookie.get('ACCESS_TOKEN');
 
-  const checkAuth = async () => {
-    return await api.getByParams('api/checkAuth', token);
-  };
-  const { data: isValid } = checkAuth();
+  const routeSpy = async () => {
+    const cookie = new Cookies();
+    const hasToken = cookie.get(COOKIE.KEY.ACCESS_TOKEN);
+    if (!hasToken) return navigate(redirectRoute);
+    const token = hasToken.split(' ')[1];
+    const {
+      data: { ok: isValid },
+    } = await api.post('api/checkAuth', { token });
 
-  const routeSpy = () => {
+    if (isValid) setIsValid((prev) => true);
+
     for (let i of AUTH_ROUTE) {
       const pathRegex = new RegExp(`[${i}]`, 'g');
-      if (!!route.match(pathRegex) && !isValid) navigate(redirectRoute);
+      if (!!route.match(pathRegex) && !isValid) return navigate(redirectRoute);
     }
   };
 
