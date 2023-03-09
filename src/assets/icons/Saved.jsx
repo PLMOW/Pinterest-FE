@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const Saved = ({ isOpen }) => {
-  console.log(isOpen);
   return (
     <Svg
       isOpen={isOpen}

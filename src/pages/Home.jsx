@@ -29,7 +29,6 @@ const Home = () => {
   const isOpen = useSelector(({ savedSlicer }) => savedSlicer);
 
   const SaveToggle = () => {
-    console.log(isOpen);
     dispatch(savedToggle());
   };
 
@@ -49,7 +48,7 @@ const Home = () => {
     dispatch(setBoxData(v));
   };
 
-  const cardCloseHandler = (v) => {
+  const cardCloseHandler = () => {
     dispatch(overlayToggle());
   };
 
