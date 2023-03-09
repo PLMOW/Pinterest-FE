@@ -13,7 +13,6 @@ const SavedBoard = () => {
     const {
       data: { data },
     } = await api.get('api/save');
-    console.log(data);
     setPinData((prev) => data);
   };
 
