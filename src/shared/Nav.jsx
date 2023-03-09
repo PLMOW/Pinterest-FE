@@ -16,12 +16,16 @@ import { KEY } from 'constants/cookie';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Nav = () => {
-  const [, , removeCookie] = useCookies();
+  const [cookies, , removeCookie] = useCookies();
   const { register, handleSubmit } = useForm();
   const api = useMemo(() => new Axios(), []);
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.loginSlicer);
   const navigate = useNavigate();
+  const checkLogin = () => {
+    const hasToken = !!cookies[KEY.ACCESS_TOKEN];
+    if (hasToken) dispatch(setLogin(true));
+  };
   const onValid = (data) => {
     const { searchKeyword } = data;
     getImages(searchKeyword);
@@ -56,6 +60,7 @@ const Nav = () => {
 
   useEffect(() => {
     getImages();
+    checkLogin();
   }, []);
 
   return (
