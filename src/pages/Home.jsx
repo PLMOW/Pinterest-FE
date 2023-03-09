@@ -22,6 +22,8 @@ const Home = () => {
   const overlayToggleState = useSelector((state) => state.overlaySlicer);
   const boxData = useSelector((state) => state.boxDataSlicer);
   const dispatch = useDispatch();
+  const onObserve = useSelector((state) => state.observeSlicer);
+
   const shuffle = () => {
     shuffleUp();
     if (!pins) return;
@@ -78,7 +80,7 @@ const Home = () => {
               );
             })
           : ''}
-        <EndData />
+        {onObserve ? <EndData /> : ''}
       </Wrapper>
     </Container>
   );
