@@ -21,7 +21,6 @@ const OverlayBox = ({ data }) => {
   const api = useMemo(() => new Axios(true), []);
 
   const checkDuplicated = (saves, currUserId) => {
-    console.log('start', saves);
     saves.forEach(({ userId }) => {
       if (userId === currUserId) setIsSavedPin(true);
     });
@@ -130,7 +129,7 @@ const Img = styled.img`
 
 const Wrapper = styled(motion.div)`
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
