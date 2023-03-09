@@ -5,6 +5,7 @@ import overlaySlicer from './modules/overlayToggle';
 import boxDataSlicer from './modules/boxDataSlicer';
 import loginSlicer from './modules/loginSlicer';
 import observeSlicer from './modules/observeSlicer';
+import savedSlicer from './modules/savedToggleSlicer';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     boxDataSlicer,
     loginSlicer,
     observeSlicer,
+    savedSlicer,
   },
 });
 
